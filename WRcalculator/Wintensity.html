@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wintensity</title>
+    <link rel="icon" type="image/png" href="img/Wintensity.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f5f5f5;
+            --gray: #2d2d2d;
+            --success: #00c853;
+            --warning: #ffab00;
+            --danger: #ff1744;
+            --card-bg: rgba(30, 30, 40, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            grid-column: 1 / -1;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            color: #aaa;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid var(--gray);
+            background: rgba(20, 20, 30, 0.8);
+            color: var(--light);
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.3);
+        }
+        
+        button {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 117, 252, 0.5);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .results {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .result-item {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: rgba(20, 20, 30, 0.5);
+            border-radius: 8px;
+        }
+        
+        .result-label {
+            font-weight: 600;
+        }
+        
+        .result-value {
+            font-weight: 700;
+            color: var(--success);
+        }
+        
+        .warning-value {
+            color: var(--warning);
+        }
+        
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .timer-setup {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .time-input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .time-input input {
+            text-align: center;
+            font-size: 1.5rem;
+            padding: 10px;
+        }
+        
+        .timer-display {
+            font-size: 4.5rem;
+            text-align: center;
+            font-family: monospace;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00c9ff, #92fe9d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0,201,255,0.4);
+            margin: 10px 0;
+            letter-spacing: 3px;
+        }
+        
+        .timer-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .timer-controls button {
+            width: auto;
+        }
+        
+        #stopBtn {
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        }
+        
+        #resetBtn {
+            background: linear-gradient(90deg, #8e2de2, #4a00e0);
+        }
+        
+        .info-box {
+            background: rgba(25, 25, 35, 0.6);
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 25px;
+            font-size: 0.95rem;
+            color: #bbb;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .time-up {
+            animation: pulse 1.5s infinite;
+            color: var(--danger) !important;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9rem;
+            grid-column: 1 / -1;
+            padding: 20px;
+        }
+        
+        .highlight {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Wintensity</h1>
+            <p class="subtitle"> Your Winrate Calculator & Grind Timer </p>
+        </header>
+        
+        <section class="card">
+            <h2 class="card-title"><i class="fas fa-calculator"></i> Winrate Calculator</h2>
+            
+            <div class="input-group">
+                <label for="desiredWinrate">Desired Win Rate (%)</label>
+                <input type="number" id="desiredWinrate" min="0" max="100" step="0.1" placeholder="Enter desired %">
+            </div>
+            
+            <div class="input-group">
+                <label for="currentWinrate">Current Win Rate (%)</label>
+                <input type="number" id="currentWinrate" min="0" max="100" step="0.1" placeholder="Enter current %">
+            </div>
+            
+            <div class="input-group">
+                <label for="matchesPlayed">Current Matches Played</label>
+                <input type="number" id="matchesPlayed" min="1" placeholder="Enter total matches">
+            </div>
+            
+            <button id="calculateBtn">Calculate</button>
+            
+            <div class="results">
+                <div class="result-item">
+                    <span class="result-label">Wins Needed:</span>
+                    <span id="winsNeeded" class="result-value">-</span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">If Next Match is Lost:</span>
+                    <span id="ifLost" class="result-value warning-value">-</span>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p>This calculator shows how many consecutive wins you need to reach your desired win rate. It also shows what your win rate would be if you lose your next match.</p>
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2 class="card-title"><i class="fas fa-hourglass-half"></i> Grind Timer</h2>
+            
+            <div class="timer-container">
+                <div class="timer-setup">
+                    <div class="time-input">
+                        <label for="hours">Hours</label>
+                        <input type="number" id="hours" min="0" max="99" value="0" placeholder="0">
+                    </div>
+                    
+                    <div class="time-input">
+                        <label for="minutes">Minutes</label>
+                        <input type="number" id="minutes" min="0" max="59" value="0" placeholder="0">
+                    </div>
+                    
+                    <div class="time-input">
+                        <label for="seconds">Seconds</label>
+                        <input type="number" id="seconds" min="0" max="59" value="0" placeholder="0">
+                    </div>
+                </div>
+                
+                <div class="timer-display" id="timer">00:00:00</div>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                
+                <div class="timer-controls">
+                    <button id="startBtn"><i class="fas fa-play"></i> Start</button>
+                    <button id="stopBtn"><i class="fas fa-stop"></i> Stop</button>
+                    <button id="resetBtn"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p>The timer will continue running even when you switch tabs or minimize the browser. Set your preferred session duration and focus on your gameplay!</p>
+            </div>
+        </section>
+        
+        <footer>
+            <p>Made with <i class="fas fa-heart" style="color: var(--danger)"></i> for dedicated gamers | All calculations happen in your browser</p>
+            <p>Pro Tip: <span class="highlight">Take breaks</span> during long gaming sessions to maintain peak performance!</p>
+        </footer>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const desiredWinrateInput = document.getElementById('desiredWinrate');
+        const currentWinrateInput = document.getElementById('currentWinrate');
+        const matchesPlayedInput = document.getElementById('matchesPlayed');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const winsNeededEl = document.getElementById('winsNeeded');
+        const ifLostEl = document.getElementById('ifLost');
+        
+        const hoursInput = document.getElementById('hours');
+        const minutesInput = document.getElementById('minutes');
+        const secondsInput = document.getElementById('seconds');
+        const timerDisplay = document.getElementById('timer');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progress');
+        
+        // Timer variables
+        let timerInterval;
+        let isRunning = false;
+        let totalTime = 0;
+        let timeLeft = 0;
+        let startTime = 0;
+        
+        // Calculate winrate results
+        function calculateWinrate() {
+            const desiredWinrate = parseFloat(desiredWinrateInput.value) / 100;
+            const currentWinrate = parseFloat(currentWinrateInput.value) / 100;
+            const matchesPlayed = parseInt(matchesPlayedInput.value);
+            
+            // Validate inputs
+            if (isNaN(desiredWinrate) || isNaN(currentWinrate) || isNaN(matchesPlayed) ||
+                desiredWinrate <= 0 || currentWinrate <= 0 || matchesPlayed <= 0) {
+                winsNeededEl.textContent = '-';
+                ifLostEl.textContent = '-';
+                return;
+            }
+            
+            // Calculate consecutive wins needed
+            const currentWins = currentWinrate * matchesPlayed;
+            
+            // Solve for x: (currentWins + x) / (matchesPlayed + x) = desiredWinrate
+            const winsNeeded = Math.ceil(
+                (desiredWinrate * matchesPlayed - currentWins) / 
+                (1 - desiredWinrate)
+            );
+            
+            // Calculate winrate if next match is lost
+            const ifLost = (currentWins / (matchesPlayed + 1) * 100).toFixed(1);
+            
+            winsNeededEl.textContent = winsNeeded > 0 ? winsNeeded : 0;
+            ifLostEl.textContent = `${ifLost}%`;
+        }
+        
+        // Format time for display
+        function formatTime(time) {
+            const hours = Math.floor(time / 3600000);
+            const minutes = Math.floor((time % 3600000) / 60000);
+            const seconds = Math.floor((time % 60000) / 1000);
+            
+            return (
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0')
+            );
+        }
+        
+        // Update the timer display
+        function updateTimer() {
+            const currentTime = Date.now();
+            const elapsed = currentTime - startTime;
+            timeLeft = totalTime - elapsed;
+            
+            if (timeLeft <= 0) {
+                timeLeft = 0;
+                clearInterval(timerInterval);
+                isRunning = false;
+                timerDisplay.classList.add('time-up');
+                startBtn.innerHTML = "<i class='fas fa-play'></i> Start";
+                playAlert();
+            }
+            
+            // Update progress bar
+            const progress = (1 - (timeLeft / totalTime)) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            timerDisplay.textContent = formatTime(timeLeft);
+        }
+        
+        // Play alert sound
+        function playAlert() {
+            try {
+                const context = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = context.createOscillator();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(440, context.currentTime);
+                oscillator.connect(context.destination);
+                oscillator.start();
+                
+                setTimeout(() => {
+                    oscillator.stop();
+                }, 1000);
+            } catch (e) {
+                console.log("Audio context not supported");
+            }
+        }
+        
+        // Start the timer
+        function startTimer() {
+            if (isRunning) return;
+            
+            // Get time values from inputs
+            const hours = parseInt(hoursInput.value) || 0;
+            const minutes = parseInt(minutesInput.value) || 0;
+            const seconds = parseInt(secondsInput.value) || 0;
+            
+            // Convert to milliseconds
+            totalTime = (hours * 3600 + minutes * 60 + seconds) * 1000;
+            
+            // Don't start if time is zero
+            if (totalTime <= 0) return;
+            
+            timeLeft = totalTime;
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+            isRunning = true;
+            startBtn.innerHTML = "<i class='fas fa-pause'></i> Pause";
+            timerDisplay.classList.remove('time-up');
+        }
+        
+        // Stop the timer
+        function stopTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+                startBtn.innerHTML = "<i class='fas fa-play'></i> Resume";
+            }
+        }
+        
+        // Reset the timer
+        function resetTimer() {
+            stopTimer();
+            hoursInput.value = "0";
+            minutesInput.value = "0";
+            secondsInput.value = "0";
+            totalTime = 0;
+            timeLeft = 0;
+            timerDisplay.textContent = "00:00:00";
+            timerDisplay.classList.remove('time-up');
+            startBtn.innerHTML = "<i class='fas fa-play'></i> Start";
+            progressBar.style.width = '0%';
+        }
+        
+        // Update timer display when inputs change
+        function updateTimerDisplay() {
+            if (isRunning) return;
+            
+            const hours = parseInt(hoursInput.value) || 0;
+            const minutes = parseInt(minutesInput.value) || 0;
+            const seconds = parseInt(secondsInput.value) || 0;
+            
+            const timeInMs = (hours * 3600 + minutes * 60 + seconds) * 1000;
+            timerDisplay.textContent = formatTime(timeInMs);
+            totalTime = timeInMs;
+            timeLeft = timeInMs;
+            progressBar.style.width = '0%';
+        }
+        
+        // Event listeners
+        calculateBtn.addEventListener('click', calculateWinrate);
+        desiredWinrateInput.addEventListener('input', calculateWinrate);
+        currentWinrateInput.addEventListener('input', calculateWinrate);
+        matchesPlayedInput.addEventListener('input', calculateWinrate);
+        
+        startBtn.addEventListener('click', startTimer);
+        stopBtn.addEventListener('click', stopTimer);
+        resetBtn.addEventListener('click', resetTimer);
+        
+        hoursInput.addEventListener('input', updateTimerDisplay);
+        minutesInput.addEventListener('input', updateTimerDisplay);
+        secondsInput.addEventListener('input', updateTimerDisplay);
+        
+        // Initialize timer
+        updateTimerDisplay();
+    </script>
+</body>
+</html>
