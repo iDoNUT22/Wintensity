@@ -1,5 +1,4 @@
-# Wintensity
-## 🎮 Winrate Calculator & Grind Timer
+# 🎮Wintensity
 
 **Winrate Calculator & Grind Timer** is a lightweight, web-based tool built for gamers who want to track their performance and manage grind sessions with precision.
 
