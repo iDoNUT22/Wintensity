@@ -7,7 +7,7 @@
 Welcome to my project!  
 Click below to try it live:
 
-👉 **[Try the Website](https://wintensity.netlify.app/)**
+👉 **[Wintensity](https://wintensity.netlify.app/)**
 ---
 All-in-one solution for:
 - 📈 Calculating how many wins you need to reach your desired winrate
