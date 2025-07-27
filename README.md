@@ -2,12 +2,10 @@
 
 **Winrate Calculator & Grind Timer** is a lightweight, web-based tool built for gamers who want to track their performance and manage grind sessions with precision.
 ---
-## 🌐 Try My Website
-
 Welcome to my project!  
 Click below to try it live:
 
-👉 **[Try Wintensity](https://wintensity.netlify.app/)**
+👉**[Try Wintensity](https://wintensity.netlify.app/)**
 ---
 All-in-one solution for:
 - 📈 Calculating how many wins you need to reach your desired winrate
